@@ -1,0 +1,6 @@
+These are the dependencies:
+bcryptjs cors dotenv express helmet jsonwebtoken knex passport passport-google-oauth20 pg sqlite3
+
+
+These are the dev dependencies:
+eslint jest nodemon supertest
