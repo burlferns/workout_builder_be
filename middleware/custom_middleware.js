@@ -170,7 +170,8 @@ function arrayObjectKeyCheck(keysToCheck,arrayObjChecked) {
 function validTokenCheck(req, res, next) {
   const { authorization } = req.headers;
 
-  const bearerToken = authorization && authorization.match('^Bearer (.+)$')[1];
+  const bearerToken = authorization && authorization.match('^Bearer (.+)$') 
+      && authorization.match('^Bearer (.+)$')[1];
 
   if (bearerToken) {
     jwt.verify(bearerToken, jwtSecret, function(err, decodedToken) {
