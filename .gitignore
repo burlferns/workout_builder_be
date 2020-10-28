@@ -123,4 +123,8 @@ temp/
 .DS_Store
 
 
+### Don't include the database
+workoutbuilder.db3
+
+
 # End of https://www.gitignore.io/api/node,visualstudiocode
