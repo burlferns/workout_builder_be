@@ -18,47 +18,6 @@ const {
 
 // ********************************************************
 // POST /auth/register
-// this has nested thens
-// ********************************************************
-// router.post('/register',
-//   validBodyCheck(['first_name','last_name', 'email','password']),
-//   (req,res)=>{
-//     let coachesInfo = req.body;
-
-//     Coaches
-//       .findCoachBy(coachesInfo.email)
-//       .then(coach => {
-
-//         if (coach && coach.password === null){
-//           res.status(400).json({message: 'Google social login was done previously, can not register local login'});
-//         } else if(coach && coach.password !== null){
-//           res.status(400).json({message: 'local login was done previously'});
-
-//         }else{
-//           // hash the password
-//           // hashRounds is the number of rounds (2^14) - iterations
-//           const hash = bcrypt.hashSync(coachesInfo.password, hashRounds);
-
-//           // override the plain text password with the hash
-//           coachesInfo.password = hash;
-
-//           Coaches.addCoach(coachesInfo)
-//             .then(saved => {
-//               const token = signToken(saved, 'coach');
-
-//               res.status(201).json({ token, message: 'Logged In', first_name: saved.first_name, last_name: saved.last_name });
-//             })
-//             .catch(error => {
-//               res.status(500).json(error);
-//             });
-//         }
-//       });
-//   }
-// );
-
-// ********************************************************
-// POST /auth/register
-// fixed nested thens with nested catches
 // ********************************************************
 router.post('/register',
   validBodyCheck(['first_name','last_name', 'email','password']),
@@ -68,13 +27,13 @@ router.post('/register',
     Coaches
       .findCoachBy(coachesInfo.email)
       .then(coach => {
-
-        if (coach && coach.password === null){
-          res.status(400).json({message: 'Google social login was done previously, can not register local login'});
-        } else if(coach && coach.password !== null){
-          res.status(400).json({message: 'local login was done previously'});
-
-        }else{
+        if (coach && coach.password === null) {
+          res.status(400).json({message: 'Google social login was done previously, can not register locally'});
+        }
+        else if(coach && coach.password !== null) {
+          res.status(400).json({message: 'local register was done previously, cannot register again'});
+        }
+        else {
           // hash the password
           // hashRounds is the number of rounds (2^14) - iterations
           const hash = bcrypt.hashSync(coachesInfo.password, hashRounds);
@@ -82,17 +41,15 @@ router.post('/register',
           // override the plain text password with the hash
           coachesInfo.password = hash;
 
-          Coaches.addCoach(coachesInfo)
-            .then(saved => {
-              const token = signToken(saved, 'coach');
-
-              res.status(201).json({ token, message: 'Logged In', first_name: saved.first_name, last_name: saved.last_name });
-            })
-            .catch(error => {
-              res.status(500).json(error);
-            });
+          return Coaches.addCoach(coachesInfo)
         }
       })
+      .then(saved => {
+        if(saved) {
+          const token = signToken(saved, 'coach');
+          res.status(201).json({ token, message: 'Logged In', first_name: saved.first_name, last_name: saved.last_name });
+        }        
+      })     
       .catch(error => {
         res.status(500).json(error);
       });
@@ -118,7 +75,7 @@ router.post('/login',
 
           res.status(200).json({ token, message: 'Logged In', first_name: user.first_name, last_name: user.last_name });
         } else if (user && user.password === null ){
-          res.status(400).json({message: 'Google social login was done previously, can not local login'});
+          res.status(400).json({message: 'Google social login was done previously, can not login locally'});
 
         } else {
           res.status(401).json({ message: 'Failed to login. Incorrect email or password' });

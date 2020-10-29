@@ -14,42 +14,6 @@ const {jwtSecret} = require('../consts');
 const db = require('../data/db-config');
 
 // ********************************************************
-// This is not used. New version below
-//
-// validBodyCheck
-// This checks the body when it is one object
-// The propts is an array of properties that the object should
-// contain
-// ********************************************************
-// function validBodyCheck(propts) {
-//   return function (req,res,next) {
-//     const body = req.body;
-//     let isError = false;
-//     let errMsg = '';
-
-//     if(Object.keys(body).length === 0) {
-//       isError = true;
-//       errMsg = 'missing request body';
-//     }
-//     else if(!isError) {
-//       propts.forEach(elem=>{
-//         if(!body[elem]) {
-//           isError = true;
-//           errMsg = `missing field ${elem} in request body`;
-//         }
-//       });
-//     }
-
-//     if(isError) {
-//       res.status(400).json({ message: errMsg });
-//     }
-//     else {
-//       next();
-//     }
-//   };
-// }
-
-// ********************************************************
 // validBodyCheck
 // This checks the body when it is one object
 // The arg keys is an array of keys that the object should
