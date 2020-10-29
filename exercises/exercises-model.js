@@ -41,15 +41,15 @@ function updateExercise(id, changes) {
 
 function deleteExercise(id) {
   let deletedExercise = {};
-  db('exercises')
+  return db('exercises')
     .where({ id })
     .first()
     .then(exercise => {
       deletedExercise = exercise;
-    });
-  return db('exercises')
-    .where('id', id)
-    .del()
+      return db('exercises')
+        .where('id', id)
+        .del();
+    })
     .then(count => {
       if (count > 0) {
         return deletedExercise;

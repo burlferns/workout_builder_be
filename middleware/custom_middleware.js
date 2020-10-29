@@ -149,7 +149,7 @@ function validTokenCheck(req, res, next) {
       }
     });
   } else {
-    res.status(400).json({ message: 'Please login first' });
+    res.status(400).json({ message: 'Token missing' });
   }
 }
 

@@ -67,7 +67,6 @@ router.delete('/:id', validTokenCheck, (req, res) => {
 
   Exercises.getExerciseById(id)
     .then(exercise => {
-      console.log(exercise);
       if (exercise && exercise.coach_id === coach_id) {
         return Exercises.deleteExercise(id);
       } else if (!exercise) {
