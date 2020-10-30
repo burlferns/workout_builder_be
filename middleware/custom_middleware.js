@@ -105,12 +105,12 @@ function objectKeyCheck(keysToCheck,objChecked) {
 // the arg arrayObjChecked, then the boolean containsAll is true, otherwise
 // it is false
 // If containsAll is true then missingKey is undefined & indexValue is -1
-// If containsAll is false then missingKey is the first element in the arg keysToCheck
-// that is not found as a key in the first element of arg objChecked. The indexValue
-// will be the index of this first element
+// If containsAll is false then missingKey is the earliest element in the arg keysToCheck
+// that is not found as a key in the earliest element of arg objChecked. The indexValue
+// will be the index of this earliest element in the arg objChecked.
 //
 // If there is more than one missing keys, in more than one of the objects, this
-// function terminates after the first missing key is found
+// function terminates after the first missing key is found in the first object.
 // **************************************************************************
 function arrayObjectKeyCheck(keysToCheck,arrayObjChecked) {
   const returnedObject = { containsAll:true, missingKey:undefined, indexValue:-1 };
