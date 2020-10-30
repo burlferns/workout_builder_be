@@ -1,23 +1,15 @@
 const db = require('../data/db-config');
 
 module.exports = {
-  getWorkouts,
   getWorkoutById,
   addWorkout,
-  updateWorkout,
   deleteWorkout,
   getExercisesInWorkout,
   addExercisesToWorkout,
-  deleteExerciseInWorkout,
   getWorkoutByProgramId,
   getExercisesByWorkoutId
 };
 
-// The arg coach_id is a integer
-function getWorkouts(coach_id) {
-  return db('workouts')
-    .where({ coach_id });
-}
 
 // The arg id is an array of ids
 function getWorkoutById(id) {
@@ -42,18 +34,6 @@ function addWorkout(workouts) {
     });
 }
 
-// The arg id is an integer
-// The arg changes is an object
-function updateWorkout(id, changes) {
-  return db('workouts')
-    .where('id', id)
-    .update(changes)
-    .then(count => {
-      if (count > 0) {
-        return getWorkoutById([id]);
-      }
-    });
-}
 
 // The arg id is an integer
 function deleteWorkout(id) {
@@ -76,12 +56,11 @@ function deleteWorkout(id) {
 
 //JSON body should be an array; each element in the array is { exercise_id, workout_id }
 function getExercisesInWorkout(exerciseWorkout) {
-  const exerciseIds = exerciseWorkout.map(el => el.exercise_id);
-  const workoutIds = exerciseWorkout.map(el => el.workout_id);
+  const exer_wrko = exerciseWorkout.map(el=>[el.exercise_id, el.workout_id]);
   return db('exercises_workouts')
-    .whereIn('exercise_id', exerciseIds)
-    .whereIn('workout_id', workoutIds);
+    .whereIn(['exercise_id', 'workout_id'], exer_wrko);
 }
+
 
 // The arg workout_id is an integer
 function getExercisesByWorkoutId(workout_id) {
@@ -98,18 +77,5 @@ function addExercisesToWorkout(exerciseWorkout) {
     .insert(exerciseWorkout)
     .then(() => {
       return getExercisesInWorkout(exerciseWorkout);
-    });
-}
-
-//JSON body should be an array; each element in the array is { exercise_id, workout_id }
-function deleteExerciseInWorkout(exerciseWorkout) {
-  const exerciseIds = exerciseWorkout.map(el => el.exercise_id);
-  const workoutIds = exerciseWorkout.map(el => el.workout_id);
-  return db('exercises_workouts')
-    .whereIn('exercise_id', exerciseIds)
-    .whereIn('workout_id', workoutIds)
-    .del()
-    .then(count => {
-      return count;
     });
 }
