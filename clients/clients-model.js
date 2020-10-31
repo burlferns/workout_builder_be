@@ -51,15 +51,15 @@ function updateClient(id, changes) {
 // id param is the client id taken from the url param
 function deleteClient(id) {
   let deletedClient = {};
-  db('clients')
+  return db('clients')
     .where({ id })
     .first()
     .then(client => {
       deletedClient = client;
-    });
-  return db('clients')
-    .where('id', id)
-    .del()
+      return db('clients')
+        .where('id', id)
+        .del()
+    })
     .then(count => {
       if (count > 0) {
         return deletedClient;
