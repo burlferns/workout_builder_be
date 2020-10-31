@@ -33,14 +33,6 @@ describe('workouts model', () => {
         program_id: 1 }]);
     });
   });
-  describe('find all workouts for that coach', () => {
-    it('find all workouts for that coach', async () => {
-
-      let workoutsObtained = await Workouts.getWorkouts(1);
-
-      expect(workoutsObtained).not.toBe(undefined);
-    });
-  });
   describe('find all workouts for that Program ID', () => {
     it('find all workouts for that Program ID', async () => {
 
@@ -49,22 +41,7 @@ describe('workouts model', () => {
       expect(workoutsObtained).not.toBe(undefined);
     });
   });
-  describe('update workout', () => {
-    it('update a workout into the db', async () => {
-      let workoutsObtained;
-
-      await Workouts.updateWorkout(5, {name:'Yoga', description:'lots of yoga stuff',day: 1,coach_id: 1, program_id:1});
-      workoutsObtained = await Workouts.getWorkoutById([5]);
-
-      expect(workoutsObtained).toMatchObject([{ id: 5,
-        name: 'Yoga',
-        description: 'lots of yoga stuff',
-        day: 1,
-        coach_id: 1,
-        program_id: 1 }]);
-
-    });
-  });
+  
   describe('delete workout', () => {
     it('delete a workouts into the db', async () => {
       let workoutsArray;
@@ -85,10 +62,7 @@ describe('workouts model', () => {
   });
 
 
-  test('delete exercise_workout record by exercise id & workout_id', async ()=>{
-    const receivedData = await Workouts.deleteExerciseInWorkout([{exercise_id:6,workout_id:4}]);
-    expect(receivedData).toEqual(1);
-  });
+  
 
 
 });
