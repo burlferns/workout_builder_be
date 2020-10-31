@@ -3,18 +3,15 @@
 const db = require('../data/db-config');
 const request = require('supertest');
 const server = require('../api/server');
-const {seedForTests} = require('../seed_for_tests.spec');
+const {seedForTests} = require('../seed_for_tests.js');
 let token;
 
 describe('programs router tests', ()=>{
-  beforeAll( async ()=> {
-    await seedForTests();
-  });
-
-
+  beforeAll(seedForTests);
 
   test('login a coach to get a token', async ()=>{
-    const res = await request(server).post('/auth/login').send({ email: 'as@mail.com', password: 'qaz' });
+    const res = await request(server).post('/auth/login')
+      .send({ email: 'as@mail.com', password: 'qaz' });
     expect(res.status).toBe(200);
     token = `Bearer ${res.body.token}`;
   });
@@ -266,17 +263,16 @@ describe('programs router tests', ()=>{
   });
 
 
-
-
-
-  // console.log('This is point 1 res.body:',res.body);
-  // console.log('This is point 2 res.body:',JSON.stringify(res.body, undefined, 2));
-
-
-
-
-
-
+  //This afterAll is just there to access the database at the end so that 
+  //Jest does not end up with an open handle that prevents it from exiting
+  //The --detectOpenHandles CLI option detects this.
+  //Don't know why you need to access the database at the end to prevent this
+  //situation and I don't think it matters what you access in the database 
+  //The problem of open handles seems to occur when running the router tests
+  //that don't access the database directly
+  afterAll(async () => {
+    await db('exercises').where({coach_id:1000});
+  });
 });
 
 
