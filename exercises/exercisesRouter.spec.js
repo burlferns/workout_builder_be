@@ -265,6 +265,6 @@ describe('exercisesRouter', function() {
   //The problem of open handles seems to occur when running the router tests
   //that don't access the database directly
   afterAll(async () => {
-    let exerciseObtained = await db('exercises').where({coach_id:1000});
+    await db('exercises').where({coach_id:1000});
   });
 });
