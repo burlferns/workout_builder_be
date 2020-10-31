@@ -92,11 +92,5 @@ async function seedForTests() {
 
 }
 
-test('dummy',()=>{
-  let dummy = true;
-  expect(dummy).toBe(true);
-});
-
-
 
 

@@ -1,7 +1,9 @@
 /* eslint-disable no-undef */
 const db = require('../data/db-config');
 const Exercises = require('./exercises-model');
-const {seedForTests} = require('../seed_for_tests.spec');
+const {seedForTests} = require('../seed_for_tests.js');
+
+
 describe('exercises model', () => {  
   beforeAll(seedForTests);
 
