@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-
+const db = require('../data/db-config');
 const request = require('supertest');
 const server = require('../api/server');
 const {seedForTests} = require('../seed_for_tests.js');
@@ -11,9 +11,7 @@ describe('clientProgramRouter', function() {
   beforeAll(seedForTests);
 
   // ------------------- Post request ---------------------- //
-
   it ('should login', function() {
-
     //Login to receive token
     return request(server)
       .post('/auth/login')
@@ -27,31 +25,25 @@ describe('clientProgramRouter', function() {
   });
 
   it ('should add data to clients_programs db', function() {
-
     return request(server)
       .post('/clients-programs')
       .set('Authorization', token)
       .send({program_id: 2, client_ids: [7, 8, 9]})
-
       .then(res => {
         expect(res.status).toBe(201);
       });
-
   });
 
   it ('should not post since no token', function() {
-
     return request(server)
       .post('/clients-programs')
       .send({program_id: 2, client_ids: [7, 8, 9]})
-
       .then(res => {
         expect(res.status).toBe(400);
       });
   });
 
   it ('should not add data to db because no body', function() {
-
     return request(server)
       .post('/clients-programs')
       .set('Authorization', token)
@@ -61,7 +53,6 @@ describe('clientProgramRouter', function() {
   });
 
   it ('should not add data to db because client_id is the wrong field', function() {
-
     return request(server)
       .post('/clients-programs')
       .set('Authorization', token)
@@ -72,7 +63,6 @@ describe('clientProgramRouter', function() {
   });
 
   it ('it should not add data to db because the clients provided do not belong to that coach', function() {
-
     return request(server)
       .post('/clients-programs')
       .set('Authorization', token)
@@ -83,7 +73,6 @@ describe('clientProgramRouter', function() {
   });
 
   it ('it should not add data to db because the program provided does not belong to that coach', function() {
-
     return request(server)
       .post('/clients-programs')
       .set('Authorization', token)
@@ -93,8 +82,8 @@ describe('clientProgramRouter', function() {
       });
   });
 
-  // ------------------- Get request for all clients for one coach ---------------------- //
 
+  // ------------------- Get request for all clients for one coach ---------------------- //
   it('should get dashboard info', function() {
     return request(server)
       .get('/clients-programs/dashboard')
@@ -114,8 +103,8 @@ describe('clientProgramRouter', function() {
       });
   });
 
-  // ------------------- Delete Request ---------------------- //
 
+  // ------------------- Delete Request ---------------------- //
   it ('it should delete a client from a program or vice versa', function () {
     return request(server)
       .delete('/clients-programs')
@@ -164,5 +153,17 @@ describe('clientProgramRouter', function() {
         expect(res.status).toBe(403);
       });
   });
+
+
+  //This is to enable Jest to exit properly
+  afterAll(function (done) {
+    server.close(done);
+  });
+
+  //This is to enable Jest to exit properly
+  afterAll( (done) =>{
+    db.destroy(done);
+  })
+
 
 });
