@@ -2,37 +2,41 @@
 /* eslint-disable no-undef */
 const db = require('../data/db-config');
 const Workouts = require('./workouts-model');
-const {seedForTests} = require('../seed_for_tests.spec');
+const {seedForTests} = require('../seed_for_tests.js');
 
 describe('workouts model', () => {
-  beforeAll( async ()=>{
-    await seedForTests();
-  });
-
-  describe('add workout', () => {
-    it('add a workout into the db', async () => {
-      let workoutArray;
-      workoutArray = await db('workouts');
-      expect(workoutArray).toHaveLength(4);
-      await Workouts.addWorkout({name:'chest and back', description:'lots of push ups and pull ups',day: 1,coach_id: 1, program_id:1});
-      workoutArray = await db('workouts');
-
-      expect(workoutArray).toHaveLength(5);
-
+  beforeAll(seedForTests);
+  
+  it('add a workout into the db', async () => {
+    let workoutArray;
+    workoutArray = await db('workouts');
+    expect(workoutArray).toHaveLength(4);
+    await Workouts.addWorkout({
+      name:'chest and back', 
+      description:'lots of push ups and pull ups',
+      day: 1,
+      coach_id: 1, 
+      program_id:1
     });
-  });
-  describe('find workouts by id', () => {
-    it('find workouts by id', async () => {
-      let workoutArray = await Workouts.getWorkoutById([5]);
+    workoutArray = await db('workouts');
 
-      expect(workoutArray).toMatchObject([{ id: 5,
-        name: 'chest and back',
-        description: 'lots of push ups and pull ups',
-        day: 1,
-        coach_id: 1,
-        program_id: 1 }]);
-    });
+    expect(workoutArray).toHaveLength(5);
   });
+  
+  it('find workouts by id', async () => {
+    let workoutArray = await Workouts.getWorkoutById([5]);
+
+    expect(workoutArray).toMatchObject([{ 
+      id: 5,
+      name: 'chest and back',
+      description: 'lots of push ups and pull ups',
+      day: 1,
+      coach_id: 1,
+      program_id: 1 
+    }]);
+  });
+  
+
   describe('find all workouts for that Program ID', () => {
     it('find all workouts for that Program ID', async () => {
 

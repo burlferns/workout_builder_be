@@ -41,4 +41,10 @@ describe('exercises model', () => {
     let exerciseObj = await Exercises.getExerciseById(1);
     expect(exerciseObj.name).toBe('sit ups');
   });  
+
+  //This is to enable Jest to exit properly
+  afterAll( (done) =>{
+    db.destroy(done);
+  })
+
 });

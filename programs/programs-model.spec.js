@@ -96,4 +96,10 @@ describe('programs models tests', ()=>{
     );
   });
 
+  //This is to enable Jest to exit properly
+  afterAll( (done) =>{
+    db.destroy(done);
+  })
+
+
 });

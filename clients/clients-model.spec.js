@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const db = require('../data/db-config');
 const Clients = require('./clients-model');
-const {seedForTests} = require('../seed_for_tests.spec');
+const {seedForTests} = require('../seed_for_tests.js');
 
 describe('Clients model', () => {
   // beforeAll(async () => {

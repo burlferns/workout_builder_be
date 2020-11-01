@@ -2,7 +2,7 @@
 const db = require('../data/db-config');
 const request = require('supertest');
 const server = require('../api/server');
-const {seedForTests} = require('../seed_for_tests.spec');
+const {seedForTests} = require('../seed_for_tests.js');
 
 let token ;
 let token2;

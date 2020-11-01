@@ -2,7 +2,7 @@
 
 const request = require('supertest');
 const server = require('../api/server');
-const {seedForTests} = require('../seed_for_tests.spec');
+const {seedForTests} = require('../seed_for_tests.js');
 
 let token;
 
