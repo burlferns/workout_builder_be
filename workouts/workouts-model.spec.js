@@ -35,27 +35,22 @@ describe('workouts model', () => {
       program_id: 1 
     }]);
   });
+    
+  it('find all workouts for that Program ID', async () => {
+    let workoutsObtained = await Workouts.getWorkoutByProgramId(1);
+    expect(workoutsObtained).not.toBe(undefined);
+  });
+   
   
-
-  describe('find all workouts for that Program ID', () => {
-    it('find all workouts for that Program ID', async () => {
-
-      let workoutsObtained = await Workouts.getWorkoutByProgramId(1);
-
-      expect(workoutsObtained).not.toBe(undefined);
-    });
+  it('delete a workouts into the db', async () => {
+    let workoutsArray;
+    workoutsArray = await db('workouts');
+    expect(workoutsArray).toHaveLength(5);
+    await Workouts.deleteWorkout(5);
+    workoutsArray = await db('workouts');
+    expect(workoutsArray).toHaveLength(4);
   });
   
-  describe('delete workout', () => {
-    it('delete a workouts into the db', async () => {
-      let workoutsArray;
-      workoutsArray = await db('workouts');
-      expect(workoutsArray).toHaveLength(5);
-      await Workouts.deleteWorkout(5);
-      workoutsArray = await db('workouts');
-      expect(workoutsArray).toHaveLength(4);
-    });
-  });
 
   test('get exercise_workout record by workout id', async ()=>{
     const receivedData = await Workouts.getExercisesByWorkoutId(1);
@@ -65,6 +60,10 @@ describe('workouts model', () => {
     ]);
   });
 
+  //This is to enable Jest to exit properly
+  afterAll( (done) =>{
+    db.destroy(done);
+  })
 
   
 
