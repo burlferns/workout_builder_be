@@ -19,7 +19,6 @@ describe('clientProgramRouter', function() {
       .then(res => {
         expect(res.status).toBe(200);
         token = `Bearer ${res.body.token}`;
-        console.log('token', token);
       });
 
   });
