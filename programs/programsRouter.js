@@ -30,7 +30,7 @@ router.post('/',
       })
       .then(data=>res.status(201).json(data))
       .catch(error => {
-        // console.log('In POST catch');
+        // console.log('In POST catch, error =',error);
         res.status(500).json(error);
       });
 
