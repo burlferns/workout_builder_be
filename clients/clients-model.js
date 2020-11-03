@@ -51,15 +51,15 @@ function updateClient(id, changes) {
 // id param is the client id taken from the url param
 function deleteClient(id) {
   let deletedClient = {};
-  db('clients')
+  return db('clients')
     .where({ id })
     .first()
     .then(client => {
       deletedClient = client;
-    });
-  return db('clients')
-    .where('id', id)
-    .del()
+      return db('clients')
+        .where('id', id)
+        .del()
+    })
     .then(count => {
       if (count > 0) {
         return deletedClient;
@@ -105,7 +105,8 @@ function deleteProgramForClient(clientProgram) {
 // coach_id param is taken from the token
 function getDashboardInfo(coach_id) {
   return db('clients_programs as cp')
-    .select('c.id as client_id', 'c.first_name', 'c.last_name', 'cp.start_date', 'p.id as program_id', 'p.name', 'p.length', 'p.phase')
+    .select('c.id as client_id', 'c.first_name', 'c.last_name', 
+      'cp.start_date', 'p.id as program_id', 'p.name', 'p.length', 'p.phase')
     .join('clients as c', 'cp.client_id', '=', 'c.id')
     .join('programs as p', 'cp.program_id', '=', 'p.id')
     .where('c.coach_id', coach_id)

@@ -2,14 +2,12 @@
 /* eslint-disable no-undef */
 const db = require('../data/db-config');
 const Programs = require('./programs-model');
-const {seedForTests} = require('../seed_for_tests.spec');
+const {seedForTests} = require('../seed_for_tests.js');
 let newProgramID;
 
 
 describe('programs models tests', ()=>{
-  beforeAll( async ()=> {
-    await seedForTests();
-  });
+  beforeAll(seedForTests);
 
   test('get programs by coach id', async ()=> {
     const programsArray = await Programs.getPrograms(1);
@@ -40,7 +38,13 @@ describe('programs models tests', ()=>{
   });
 
   test('add a program', async ()=>{
-    const newProgram = {name: 'progFromTest', phase:'progFT phase', description:'progFT desc', length: 22, coach_id:1};
+    const newProgram = {
+      name: 'progFromTest', 
+      phase:'progFT phase', 
+      description:'progFT desc', 
+      length: 22, 
+      coach_id:1
+    };
     const programsArray = await Programs.addProgram(newProgram);
     newProgramID = programsArray.id;
     expect(programsArray).toEqual(
@@ -56,9 +60,14 @@ describe('programs models tests', ()=>{
   });
 
   test('update a program', async()=>{
-    const updatedProgram = {name: 'progFromTest-new', phase:'progFT phaseNew', description:'progFT descNew', length: 23, coach_id:1};
+    const updatedProgram = {
+      name: 'progFromTest-new', 
+      phase:'progFT phaseNew', 
+      description:'progFT descNew', 
+      length: 23, 
+      coach_id:1
+    };
     const programsArray = await Programs.updateProgram(newProgramID,updatedProgram);
-    // console.log('this is in programs',programsArray);
     expect(programsArray).toEqual(
       {
         id: 3,
@@ -86,5 +95,11 @@ describe('programs models tests', ()=>{
       }
     );
   });
+
+  //This is to enable Jest to exit properly
+  afterAll( (done) =>{
+    db.destroy(done);
+  })
+
 
 });

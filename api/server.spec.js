@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
+const db = require('../data/db-config');
 const request = require('supertest');
 const server = require('../api/server');
 
 describe('server is up check', () => {
-  it('should return a 200', () => {
+  test('should return a 200', () => {
     return request(server)
       .get('/')
       .then(res=> {
@@ -11,5 +12,18 @@ describe('server is up check', () => {
         expect(res.body.server).toBe('server is up');
       });
   });
+
+  
+  //This is to enable Jest to exit properly
+  afterAll(function (done) {
+    server.close(done);
+  });
+
+  //This is to enable Jest to exit properly
+  afterAll( (done) =>{
+    db.destroy(done);
+  })
+
+  
 });
 

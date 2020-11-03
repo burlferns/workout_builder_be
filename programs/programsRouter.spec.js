@@ -3,18 +3,15 @@
 const db = require('../data/db-config');
 const request = require('supertest');
 const server = require('../api/server');
-const {seedForTests} = require('../seed_for_tests.spec');
+const {seedForTests} = require('../seed_for_tests.js');
 let token;
 
 describe('programs router tests', ()=>{
-  beforeAll( async ()=> {
-    await seedForTests();
-  });
-
-
+  beforeAll(seedForTests);
 
   test('login a coach to get a token', async ()=>{
-    const res = await request(server).post('/auth/login').send({ email: 'as@mail.com', password: 'qaz' });
+    const res = await request(server).post('/auth/login')
+      .send({ email: 'as@mail.com', password: 'qaz' });
     expect(res.status).toBe(200);
     token = `Bearer ${res.body.token}`;
   });
@@ -265,17 +262,15 @@ describe('programs router tests', ()=>{
     });
   });
 
-
-
-
-
-  // console.log('This is point 1 res.body:',res.body);
-  // console.log('This is point 2 res.body:',JSON.stringify(res.body, undefined, 2));
-
-
-
-
-
+  //This is to enable Jest to exit properly
+  afterAll(function (done) {
+    server.close(done);
+  });
+  
+  //This is to enable Jest to exit properly
+  afterAll( (done) =>{
+    db.destroy(done);
+  })
 
 });
 

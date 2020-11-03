@@ -124,7 +124,9 @@ router.put('/:id', validTokenCheck, validBodyCheck(['first_name', 'last_name', '
     .then(clientsArray => {
       if (clientsArray) {
         for (let i = 0; i < clientsArray.length; i++) {
-          if (clientsArray[i].email.toLowerCase() === clientData.email.toLowerCase() && clientsArray[i].email !== clientEmail) {
+          if (parseInt(clientsArray[i].id) !== parseInt(id) && 
+            clientsArray[i].email.toLowerCase() === clientData.email.toLowerCase()
+          ) {
             emailIsUnique = false;
           }
         }

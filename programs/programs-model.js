@@ -42,15 +42,15 @@ function updateProgram(id, changes) {
 
 function deleteProgram(id) {
   let deletedProgram = {};
-  db('programs')
+  return db('programs')
     .where({ id })
     .first()
     .then(program => {
       deletedProgram = program;
-    });
-  return db('programs')
-    .where('id', id)
-    .del()
+      return db('programs')
+        .where('id', id)
+        .del();
+    })
     .then(count => {
       if (count > 0) {
         return deletedProgram;

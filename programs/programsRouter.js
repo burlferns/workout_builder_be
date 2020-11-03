@@ -5,63 +5,11 @@ const router = express.Router();
 const Programs = require('./programs-model');
 const Workouts = require('../workouts/workouts-model');
 const Clients = require('../clients/clients-model');
-const {validTokenCheck, engineValidBdyChk, arrayObjectKeyCheck, validRecordIdCoachIdCheck} = require('../middleware/custom_middleware');
+const {validTokenCheck, engineValidBdyChk, arrayObjectKeyCheck, validRecordIdCoachIdCheck} 
+  = require('../middleware/custom_middleware');
 
 // ********************************************************
 // POST /programs
-// This uses nested thens that does not handle errors properly
-// attempt-1
-// ********************************************************
-// router.post('/', validTokenCheck, (req, res) => {
-//   let programObject = {...req.body};
-//   delete programObject.workouts;
-//   const coach_id = req.token.coachID;
-//   programObject.coach_id = coach_id;
-
-//   Programs.addProgram(programObject)
-//     .then(savedProgram => {
-//       let programId = savedProgram.id;
-//       let workoutsArray = req.body.workouts.map(el => {
-//         let tempObject1 = {...el};
-//         delete tempObject1.exercises;
-//         tempObject1.program_id = programId;
-//         tempObject1.coach_id = coach_id;
-//         return tempObject1;
-//       });
-//       // console.log('This is workoutsArray:',workoutsArray);
-//       Workouts.addWorkout(workoutsArray)
-//         .then(savedWorkouts => {
-//           // workoutIdArray will return an array of the workout IDs for the program
-//           let workoutIdArray = savedWorkouts.map(el => el.id);
-//           // console.log('This is workoutIdArray:',workoutIdArray);
-
-//           let exercisesArray = [];
-//           req.body.workouts.forEach((elW, indexW) => {
-//             elW.exercises.forEach((elE) => {
-//               let tempObject2 = {};
-//               tempObject2.exercise_id = elE.id;
-//               tempObject2.exercise_details = elE.exercise_details;
-//               tempObject2.order = elE.order;
-//               tempObject2.workout_id = workoutIdArray[indexW];
-//               exercisesArray.push(tempObject2);
-//             });
-//           });
-//           // console.log('This is exercisesArray:',exercisesArray);
-//           Workouts.addExercisesToWorkout(exercisesArray)
-//             .then(() => {
-//               bigDataResponseA(coach_id)
-//                 .then(data=>res.status(201).json(data));
-//             });
-//         });
-//     })
-//     .catch(error => {
-//       res.status(500).json(error);
-//     });
-// });
-
-// ********************************************************
-// POST /programs
-// This does not use nested thens
 // ********************************************************
 router.post('/',
   validTokenCheck,
@@ -82,7 +30,7 @@ router.post('/',
       })
       .then(data=>res.status(201).json(data))
       .catch(error => {
-        // console.log('In POST catch');
+        // console.log('In POST catch, error =',error);
         res.status(500).json(error);
       });
 
@@ -141,6 +89,9 @@ router.delete('/:id',validTokenCheck,(req,res)=>{
     .then(program=>{
       if (program && program.coach_id === coach_id) {
         return Programs.deleteProgram(program_id);
+        //Note that because of CASCADE setting for the workouts and exercise_workouts
+        //table, the associated entries in the workouts and exercise_workouts tables
+        //will also be deleted
       } 
       else if (!program) {
         res.status(404).json({ error: `cannot delete program with id: ${program_id} because it does not exist` });
@@ -149,8 +100,10 @@ router.delete('/:id',validTokenCheck,(req,res)=>{
         res.status(403).json({ error: `you are not authorized to delete program with id: ${program_id}`});
       }
     })
-    .then(program=>{
-      res.status(200).json(program);
+    .then(program=>{ 
+      if(program) {
+        res.status(200).json(program);
+      }
     })
     .catch(error => {
       res.status(500).json(error);
@@ -199,7 +152,6 @@ async function saveWorkoutsExerciseLinks(bigDataObject,program_id,coach_id) {
   const exercisesArray = [];
   for(let iW=0;iW<workoutsArray.length;iW++) {
     const workoutAdded = await Workouts.addWorkout(workoutsArray[iW]);
-    // console.log('Here in saveWorkoutsExerciseLinks');
     bigDataObject.workouts[iW].exercises.forEach((elE) => {
       let tempObject2 = {};
       tempObject2.exercise_id = elE.exercise_id;
@@ -271,7 +223,7 @@ function checkPostPutEpKeys(isPut) {
     if(!isError) {
       const wrkOutLen = workouts.length;
       keys = ['exercise_id','order','exercise_details'];
-      let iW=0;
+      let iW=0; //This is an index that points to an element in the workouts array
       while(!isError && iW<wrkOutLen) {
         const exercises = workouts[iW].exercises;
         rcdObj = arrayObjectKeyCheck(keys,exercises);
@@ -357,7 +309,6 @@ function chkCoachIDRecordIDPostPutEp(isPut) {
 
     intAF()
       .catch(error => {
-        // console.log('In the function chkCoachIDRecordIDPostPutEp');
         res.status(500).json(error);
       });
   };

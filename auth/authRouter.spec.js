@@ -131,4 +131,16 @@ describe('/auth/google', function() {
         expect(res.status).toBe(302);
       });
   });
+
+  //This is to enable Jest to exit properly
+  afterAll(function (done) {
+    server.close(done);
+  });
+
+  //This is to enable Jest to exit properly
+  afterAll( (done) =>{
+    db.destroy(done);
+  })
+
+
 });
