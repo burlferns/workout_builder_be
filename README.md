@@ -1493,15 +1493,12 @@ Table of contents
 
 #### Workouts Model
 
-`getWorkouts(coach_id)` -> Returns all workouts for given coach id
 
 `getWorkoutById(id)` -> Returns a single workout by id
 
 `getWorkoutByProgramId(program_id)` -> Returns all workouts for given program id
 
 `addWorkout(workouts)` -> Creates one or more new workouts and returns the workouts 
-
-`updateWorkout(id, changes)` -> Modifies a single workout by id and returns the modified workout
 
 `deleteWorkout(id)` -> Deletes a single workout by id and returns the deleted workout
 
@@ -1510,8 +1507,6 @@ Table of contents
 `getExercisesByWorkoutId(workout_id)` -> Returns all exercises for the given workout id
 
 `addExercisesToWorkout(exerciseWorkout)` -> Adds exercises to given workout and returns them
-
-`deleteExerciseInWorkout(exerciseWorkout)` -> Deletes specified exercises in given workout
 
 #### Programs Model
 
@@ -1556,7 +1551,7 @@ In order for the app to function correctly, the user must set up their own envir
 create a .env file that includes the following:
 
     *  DB_JWTSECRET - secret key for access token
-    *  DATABASE_URL - URL for Heroku postgres deployment
+    *  DATABASE_URL - URL for PostgreSQL database in Heroku deployment
     
     
 
