@@ -1548,10 +1548,12 @@ Table of contents
 ### [Return to table of contents](#table-of-contents)
 In order for the app to function correctly, the user must set up their own environment variables.
 
-create a .env file that includes the following:
+Note that only DB_JWTSECRET is necessary to be specified for running this project on your local computer
 
     *  DB_JWTSECRET - secret key for access token
     *  DATABASE_URL - URL for PostgreSQL database in Heroku deployment
+    *  PORT - port value for Heroku deployment
+    *  DB_CONNECT - used to set database production config for Heroku deployment
     
     
 
