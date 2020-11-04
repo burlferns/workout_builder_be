@@ -2,15 +2,15 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
+// const passport = require('passport');  //Disabled Google Auth
 const router = express.Router();
 const Coaches = require('../coaches/coaches-model');
 const url = require('url');
-require('../config/passport-setup');
+// require('../config/passport-setup');   //Disabled Google Auth
 const {jwtSecret,hashRounds} = require('../consts');
 
 module.exports = router;
-router.use(passport.initialize());
+// router.use(passport.initialize());    //Disabled Google Auth
 const {
   validBodyCheck,
   validTokenCheck,
@@ -91,23 +91,23 @@ router.post('/login',
 //  auth with google
 // ********************************************************
 
-router.get('/google', passport.authenticate('google', {
-  scope:['profile', 'email']
-}));
+// router.get('/google', passport.authenticate('google', {
+//   scope:['profile', 'email']
+// }));
 
-router.get('/google/callback', passport.authenticate('google', { session: false, scope:['profile', 'email']}), (req,res) => {
+// router.get('/google/callback', passport.authenticate('google', { session: false, scope:['profile', 'email']}), (req,res) => {
 
-  const token = signToken(req.user,'coach');
-  res.redirect(url.format({
-    pathname: process.env.FRONTEND_DOMAIN,
-    query: {
-      token,
-      first_name: req.user.first_name,
-      last_name: req.user.last_name
-    }
-  }));
+//   const token = signToken(req.user,'coach');
+//   res.redirect(url.format({
+//     pathname: process.env.FRONTEND_DOMAIN,
+//     query: {
+//       token,
+//       first_name: req.user.first_name,
+//       last_name: req.user.last_name
+//     }
+//   }));
 
-});
+// });
 
 // ********************************************************
 // signToken
