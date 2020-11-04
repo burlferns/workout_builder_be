@@ -1,6 +1,6 @@
 # API Documentation
 
-#### Backend delpoyed at [Heroku](https://labs20-workout-builder.herokuapp.com) <br>
+#### Backend delpoyed at [Heroku](https://workout-builder-be.herokuapp.com/) <br>
 
 
 ## Getting started
@@ -1548,7 +1548,7 @@ Table of contents
 ### [Return to table of contents](#table-of-contents)
 In order for the app to function correctly, the user must set up their own environment variables.
 
-Note that only DB_JWTSECRET is necessary to be specified for running this project on your local computer
+Note that only DB_JWTSECRET is necessary to be specified for running this project on your local computer. To set up your enviromental variables locally, use a .env file in the main project directory.
 
     *  DB_JWTSECRET - secret key for access token
     *  DATABASE_URL - URL for PostgreSQL database in Heroku deployment
