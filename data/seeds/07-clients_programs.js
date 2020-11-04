@@ -1,7 +1,7 @@
 
 exports.seed = function(knex) {
   return knex('clients_programs')
-    .truncate()
+    // .truncate()
     .then(function () {
       return knex('clients_programs').insert([
         //For coach_id =1

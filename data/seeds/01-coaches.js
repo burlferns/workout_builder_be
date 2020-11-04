@@ -3,7 +3,7 @@ const {hashRounds} = require('../../consts');
 
 exports.seed = function(knex) {
   return knex('coaches')
-    .truncate()
+    // .truncate()
     .then(function () {
       return knex('coaches').insert([
         { 

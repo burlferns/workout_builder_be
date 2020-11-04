@@ -1,7 +1,7 @@
 
 exports.seed = function(knex) {
   return knex('exercises')
-    .truncate()
+    // .truncate()
     .then(function () {
       return knex('exercises').insert([
         {name: 'exerA', focal_points:'ex textA', coach_id:1},
