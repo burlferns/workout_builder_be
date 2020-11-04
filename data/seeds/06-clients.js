@@ -1,7 +1,7 @@
 
 exports.seed = function(knex) {
   return knex('clients')
-    .truncate()
+    // .truncate()
     .then(function () {
       return knex('clients').insert([
         {first_name: 'clientFirstA', last_name: 'clientLastA', email: 'clienta@mail.com', coach_id: 1,},
